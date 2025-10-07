@@ -1,35 +1,32 @@
-# Fuzzy De Morgan's Law Implementation
+def complement(A):
+    return [1 - a for a in A]
 
-# Define fuzzy sets A and B
-A = {'x1': 0.2, 'x2': 0.5, 'x3': 0.8}
-B = {'x1': 0.6, 'x2': 0.3, 'x3': 0.9}
+def union(A, B):
+    return [max(a, b) for a, b in zip(A, B)]
 
-# Complement of a fuzzy set: 1 - value
-A_comp = {x: 1 - A[x] for x in A}
-B_comp = {x: 1 - B[x] for x in B}
+def intersection(A, B):
+    return [min(a, b) for a, b in zip(A, B)]
 
-# Fuzzy union (A ∪ B): max(A[x], B[x])
-union = {x: max(A[x], B[x]) for x in A}
+A = list(map(float, input("Enter fuzzy set A (0-1, space separated): ").split()))
+B = list(map(float, input("Enter fuzzy set B (0-1, space separated): ").split()))
 
-# Fuzzy intersection (A ∩ B): min(A[x], B[x])
-intersection = {x: min(A[x], B[x]) for x in A}
+if len(A) != len(B):
+    print("Sets must have the same length!")
+else:
+    not_A = complement(A)
+    not_B = complement(B)
 
-# (A ∪ B)' = A' ∩ B'
-lhs1 = {x: 1 - union[x] for x in A}   # Left-hand side
-rhs1 = {x: min(A_comp[x], B_comp[x]) for x in A}  # Right-hand side
+    left_union = complement(union(A, B))
+    right_intersection = intersection(not_A, not_B)
 
-# (A ∩ B)' = A' ∪ B'
-lhs2 = {x: 1 - intersection[x] for x in A}
-rhs2 = {x: max(A_comp[x], B_comp[x]) for x in A}
+    left_intersection = complement(intersection(A, B))
+    right_union = union(not_A, not_B)
 
-# Display results
-print("A:", A)
-print("B:", B)
-print("\nA complement:", A_comp)
-print("B complement:", B_comp)
+    print("\nDe Morgan's Law Check:")
+    print("1. NOT (A U B) =", left_union)
+    print("   NOT A ∩ NOT B =", right_intersection)
+    print("   Law holds?" , left_union == right_intersection)
 
-print("\n(A ∪ B)' =", lhs1)
-print("A' ∩ B'  =", rhs1)
-
-print("\n(A ∩ B)' =", lhs2)
-print("A' ∪ B'  =", rhs2)
+    print("2. NOT (A ∩ B) =", left_intersection)
+    print("   NOT A U NOT B =", right_union)
+    print("   Law holds?" , left_intersection == right_union)

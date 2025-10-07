@@ -110,7 +110,7 @@ def main():
     text = input("Enter text: ")
 
     if choice == "1":
-        shift = int(input("Enter shift (e.g., 3): "))
+        shift = 3
         enc = caesar_cipher(text, shift)
         dec = caesar_cipher(enc, shift, decrypt=True)
         print("\nEncrypted:", enc)

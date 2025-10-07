@@ -1,28 +1,10 @@
-from typing import Dict, List, Tuple
+def lambda_cut(fuzzy_set, lam):
+    return [1 if x >= lam else 0 for x in fuzzy_set]
 
+fuzzy_set = list(map(float, input("Enter fuzzy set elements (0-1, space separated): ").split()))
+lam = float(input("Enter lambda value (0-1): "))
 
-FuzzySet = Dict[str, float]
+cut_set = lambda_cut(fuzzy_set, lam)
 
-
-def lambda_cut(fs: FuzzySet, lam: float) -> List[str]:
-	if not (0.0 <= lam <= 1.0):
-		raise ValueError("lambda must be in [0,1]")
-	return [x for x, mu in fs.items() if mu >= lam]
-
-
-def strong_lambda_cut(fs: FuzzySet, lam: float) -> List[str]:
-	return [x for x, mu in fs.items() if mu > lam]
-
-
-def main():
-	A = {"x1": 0.1, "x2": 0.6, "x3": 0.8, "x4": 0.3}
-	lam = 0.5
-	print("A:", A)
-	print("λ-cut (>= 0.5):", lambda_cut(A, lam))
-	print("strong λ-cut (> 0.5):", strong_lambda_cut(A, lam))
-
-
-if __name__ == "__main__":
-	main()
-
-
+print("\nOriginal fuzzy set:", fuzzy_set)
+print(f"λ-cut (λ = {lam}):", cut_set)
