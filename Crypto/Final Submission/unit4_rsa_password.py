@@ -1,38 +1,15 @@
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
+import rsa
 
+(public_key, private_key) = rsa.newkeys(512)  
 
-def generate_keys(bits: int = 2048):
-	key = RSA.generate(bits)
-	private_key = key
-	public_key = key.publickey()
-	return public_key, private_key
+username = input("Enter username: ")
+password = input("Enter password: ")
 
+encrypted_password = rsa.encrypt(password.encode(), public_key)
 
-def encrypt_password(password: str, public_key: RSA.RsaKey) -> bytes:
-	cipher = PKCS1_OAEP.new(public_key)
-	return cipher.encrypt(password.encode("utf-8"))
+decrypted_password = rsa.decrypt(encrypted_password, private_key).decode()
 
-
-def decrypt_password(token: bytes, private_key: RSA.RsaKey) -> str:
-	cipher = PKCS1_OAEP.new(private_key)
-	return cipher.decrypt(token).decode("utf-8")
-
-
-def main():
-	print("Unit IV - RSA Password Encryption (OAEP)")
-	username = input("Username: ")
-	password = input("Password: ")
-	pub, priv = generate_keys()
-	encrypted = encrypt_password(password, pub)
-	decrypted = decrypt_password(encrypted, priv)
-	print("User -", username)
-	print("Password -", password)
-	print("Encrypted password -", encrypted.hex())
-	print("Decrypted password -", decrypted)
-
-
-if __name__ == "__main__":
-	main()
-
-
+print("\nUsername:", username)
+print("Password:", password)
+print("Encrypted password:", encrypted_password)
+print("Decrypted password:", decrypted_password)

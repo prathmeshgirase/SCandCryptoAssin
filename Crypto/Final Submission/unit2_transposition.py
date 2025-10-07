@@ -33,7 +33,7 @@ def rail_fence_decrypt(cipher, rails):
     return result
 
 # Example
-text = "HELLO"
+text = "HELLOWORLD"
 cipher = rail_fence_encrypt(text, 3)
 print("=== Rail Fence Cipher ===")
 print("Encrypted:", cipher)
